@@ -15,7 +15,7 @@ class City(db.Model):
 
 
 def get_weather_data(city):
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=d1ac7d542750826ada260a201e02e655'
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid='
     response = requests.get(url.format(city)).json()
     return response
 
@@ -56,14 +56,14 @@ def index_post():
                 db.session.commit()
 
     if err_msg:
-        flash(err_msg, 'error')
+        flash(err_msg, category='error')
     else:
         flash('Add city {} successfully'.format(new_city))
 
     return redirect(url_for('index_get'))
 
 
-@app.route('/delete/<name>')
+@app.route('/delete/<string:name>/')
 def delete_city(name):
     city = City.query.filter_by(name=name).first()
     db.session.delete(city)
